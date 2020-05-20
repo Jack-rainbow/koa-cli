@@ -48,6 +48,22 @@
 ├─ schema                                 ORM
 ```
 
+### TODO
+
+- [x] 异常处理
+- [x] 错误日志
+- [x] 路由自动注入
+- [] pm2
+- [] 鉴权
+- [x] 路径别名
+- [] 测试框架
+- [] 集成swagger
+- [] 网关方案
+- [] 线上热更新
+- [] 线上热部署
+- [] 线上监控
+
+
 ### 接口规范
 - [阮一峰resetful规范](http://www.ruanyifeng.com/blog/2014/05/restful_api.html)
 
@@ -67,6 +83,7 @@
    - [koa-seesion理解](https://github.com/iNuanfeng/blog/issues/1)
 
 [⬆ Back to Top](#目录结构)
+
 
 ### 路由自动注入
 
