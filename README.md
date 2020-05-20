@@ -2,11 +2,13 @@
 
 ### 安装
 
- yarn global koa-generator
+   yarn global koa-generator
 
 #### 启动
 
- yarn dev
+   yarn
+
+   yarn dev
 
 
 
@@ -50,18 +52,19 @@
 
 ### TODO
 
+-  测试框架
+-  集成swagger
+-  网关方案
+-  线上热更新
+-  线上热部署
+-  线上监控
+-  pm2
+-  鉴权
 - [x] 异常处理
 - [x] 错误日志
 - [x] 路由自动注入
-- [] pm2
-- [] 鉴权
 - [x] 路径别名
-- [] 测试框架
-- [] 集成swagger
-- [] 网关方案
-- [] 线上热更新
-- [] 线上热部署
-- [] 线上监控
+
 
 
 ### 接口规范
