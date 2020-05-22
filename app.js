@@ -15,10 +15,11 @@ import {
 } from './middleware/error/response'
 import catchError from './middleware/exception'
 import constants from './middleware/error/constants'
+import loadRouter from './routes/lib/loadRouter/index'
 
 const app = new Koa()
 Parameter(app);
-
+loadRouter(app)
 InitManager.initCore(app); // ! 自动注入接口路由
 
 app

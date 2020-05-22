@@ -89,6 +89,7 @@
 
 
 ### 路由自动注入
+因使用装饰器，暂时废弃
 
 [路由注入](https://juejin.im/post/5d255d05518825424d656e11)
 
@@ -169,6 +170,13 @@ module.exports = InitManager;
 ### 线上日志
 
 [⬆ Back to Top](#目录结构)
+#### 装饰器
+
+- 插件
+  [routing-controllers](https://github.com/typestack/routing-controllers)
+
+- [配置文件](https://www.cnblogs.com/beyonds/p/11190359.html)
+- [教程2](https://juejin.im/post/5c03ebc06fb9a049ff4dde3c)
 
 ### 异常处理
 - 日志配置文件：

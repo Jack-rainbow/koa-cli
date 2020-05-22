@@ -1,17 +1,15 @@
 import requireDirectory from 'require-directory';
 import Router from 'koa-router';
-
-
 class InitManager {
     static initCore(app) {
         //把app.js中的koa实例传进来
         InitManager.app = app;
-        InitManager.initLoadRouters();
+        // InitManager.initLoadRouters();
         InitManager.loadHttpException();
         InitManager.loadResponse();
         InitManager.loadConfig()
     }
-    //全局注册路由
+    //全局注册路由(暂时废弃)
     static initLoadRouters() {
         //注意这里的路径是依赖于当前文件所在位置的
         //最好写成绝对路径 ${process.cwd()}
