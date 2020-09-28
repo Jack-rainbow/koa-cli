@@ -8,8 +8,8 @@ const router = new Router(
 //     prefix: '/api/v1'
 // }
 )
-router.post('/userInfo/create', async (ctx) => {
-    ctx.body = global.res.format({}, 200, 'succ')
+router.get('/user', async (ctx) => {
+    ctx.body = global.res.format({}, 200, '晓斌你个垃圾')
     ctx.status = 200
 })
 // router.post('/userInfo/create',auth, async ctx => {
