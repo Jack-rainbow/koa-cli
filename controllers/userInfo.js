@@ -9,7 +9,7 @@ const router = new Router(
 // }
 )
 router.get('/user', async (ctx) => {
-    ctx.body = global.res.format({}, 200, '晓斌你个垃圾')
+    ctx.body = global.res.format({}, 200, '服务启动成功')
     ctx.status = 200
 })
 // router.post('/userInfo/create',auth, async ctx => {
