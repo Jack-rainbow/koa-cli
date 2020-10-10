@@ -1,47 +1,18 @@
-import requireDirectory from 'require-directory';
-import Router from 'koa-router';
+import {
+    SwaggerRouter
+} from 'koa-swagger-decorator'
+import * as path from 'path'
 
+const router = new SwaggerRouter()
 
-class InitManager {
-    static initCore(app) {
-        //把app.js中的koa实例传进来
-        InitManager.app = app;
-        InitManager.initLoadRouters();
-        InitManager.loadHttpException();
-        InitManager.loadResponse();
-        InitManager.loadConfig()
-    }
-    //全局注册路由
-    static initLoadRouters() {
-        //注意这里的路径是依赖于当前文件所在位置的
-        //最好写成绝对路径 ${process.cwd()}
-        const apiDirectory = `../controllers`
-        requireDirectory(module, apiDirectory, {
-            visit: whenLoadModule //visit将添加到module.exports的每个模块调用的选项
-        });
-        
-        function whenLoadModule(obj) {
-            if (obj instanceof Router) {
-                InitManager.app.use(obj.routes(), obj.allowedMethods())
-            } 
-        }
-    }
-    //全局注册httpCode
-    static loadHttpException() {
-        const errors = require('../middleware/http-exception/index');
-        global.errs = errors;
-    }
-    //全局注册res模板
-    static loadResponse() {
-        const response = require('../middleware/error/response');
-        global.res = response
-    }
-    //全局注册配置
-    static loadConfig(path = '') {
-        const configPath = path || process.cwd() + '/config/database.js';
-        const config = require(configPath);
-        global.config = config;
-    }
+// swagger docs avaliable at http://localhost:3000/swagger-html
+router.swagger({
+    title: '一个demo系统',
+    description: 'API DOC',
+    version: '1.0.0'
+})
 
-}
-module.exports = InitManager;
+// 查找对应目录下的controller类
+router.mapDir(path.resolve(__dirname, '../controllers/'))
+
+export default router

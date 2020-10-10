@@ -4,7 +4,8 @@ import koaBody from 'koa-body';
 import cors from 'koa-cors';
 import accessLogger from './middleware/logs'; // 日志输出
 import signale from './config/signale'; // shell输出美化
-import InitManager from './routes';
+import MainManager from './routes/main';
+import InitRouter from './routes/index';
 import Parameter from 'koa-parameter';
 import {
   CustomError,
@@ -24,6 +25,7 @@ app
   .use(catchError)
   .use(cors()) // ! 跨域服务
   .use(json())
+  .use(InitRouter.routes()) // ! 自动注入接口路由
   .use(koaBody())
   .use((ctx, next) => {
     return next().catch((err) => {
@@ -41,8 +43,7 @@ app
       ctx.body = format({}, code, msg)
     })
   })
-// 路由监听事件之后先注册body，再注册router.routes()，最后监听3000端口
-InitManager.initCore(app); // ! 自动注入接口路由
+MainManager.initCore(app); 
 
 app.use(async () => { // 404
     throw new HttpError(constants.HTTP_CODE.NOT_FOUND)

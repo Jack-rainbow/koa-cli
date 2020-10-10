@@ -1,154 +1,110 @@
+import {
+    request,
+    summary,
+    body,
+    tags,
+    middlewares,
+    path,
+    description,
+    orderAll,
+    query
+} from 'koa-swagger-decorator'
 
-import Router from 'koa-router';
-import UserInfoModel from '@mo/models/userInfo';
-import jsonwebtoken from 'jsonwebtoken';
-import md5 from 'md5';
-const router = new Router(
-//     {
-//     prefix: '/api/v1'
-// }
-)
-router.get('/user', async (ctx) => {
-    ctx.body = global.res.format({}, 200, '服务启动成功')
-    ctx.status = 200
-})
-// router.post('/userInfo/create',auth, async ctx => {
-//     let req = ctx.request.body;
-//     if (!!req.email && !!req.password) {
-//         try {
-//             const email = await UserInfoModel.getUserEmail(req.email);
-//             if (email) {
-//                 ctx.response.status = 400;
-//                 ctx.body = {
-//                     code: 400,
-//                     msg: '邮箱存在',
-//                     data: null
-//                 }
-                
-//             } else {
-//                 await UserInfoModel.register(req);
-//                 ctx.response.status = 200;
-//                 ctx.body = {
-//                     code: 200,
-//                     msg: '注册成功',
-//                     data: true
-//                 }
-//             }
+const tag = tags(['List'])
+
+const logTime = () => async (ctx, next) => {
+    //处理请求的中间拦截
+    console.log(`start: ${new Date()}`)
+    await next()
+    console.log(`end: ${new Date()}`)
+}
+const getListSchema = {
+    keyword: {
+        type: 'string',
+        required: true
+    },
+    status: {
+        type: 'number',
+        required: true
+    }
+}
+const listSchema = {
+    user_id: {
+        type: 'string',
+        format: 'uuid',
+        required: true
+    },
+    content: {
+        type: 'string',
+        required: true
+    },
+    status: {
+        type: 'string',
+        required: true
+    }
+}
 
 
-//         } catch (err) {
-//             ctx.response.status = 500;
-//             ctx.body = {
-//                 code: 500,
-//                 msg: '注册失败',
-//                 data: err
-//             }
-//         }
-//     } else {
-//         ctx.response.status = 400;
-//         ctx.body = {
-//             code: 400,
-//             msg: '参数不齐全'
-//         }
-//     }
-// })
 
-// router.post('/userInfo/:email',auth,  async ctx => {
-//     let {
-//         email,
-//         password
-//     } = ctx.request.body;
-//     if (!!email  && !!password) {
-//         try {
-//             const res = await UserInfoModel.getUserEmail(email);
-//             if (res) {
-//                 await UserInfoModel.updatePass(email, password);
-//                 ctx.response.status = 200;
-//                 ctx.body = {
-//                     code: 200,
-//                     msg: '密码修改成功',
-//                     data: true
-//                 }
-//             } else {
-//                 ctx.response.status = 400;
-//                 ctx.body = {
-//                     code: 400,
-//                     msg: '密码修改失败',
-//                     data: false
-//                 }
-//             }
+export default class ListController {
+    @request('get', '/list/list')
+    @summary('返回一个列表')
+    @description('example of api')
+    @tag
+    @middlewares([logTime()])
+    @query(getListSchema)
+    static async getTodoList(ctx) {
+        const data = ctx.request.query
+        if (data) {
+            ctx.body = global.res.format({}, 200, '成功');
+            ctx.status = 200;
+        } else {
+            ctx.body = global.res.format({}, -1, '参数错误');
+            ctx.status = 200;
+        }
+      
+    }
 
-//         } catch (err) {
-//             ctx.response.status = 500;
-//             ctx.body = {
-//                 code: 500,
-//                 msg: '失败',
-//                 data: err
-//             }
-//         }
-//     } else {
-//         ctx.response.status = 400;
-//         ctx.body = {
-//             code: 400,
-//             msg: '参数不齐全'
-//         }
-//     }
-// })
+    @request('post', '/list/')
+    @summary('创建列表一行数据')
+    @tag
+    @body(listSchema)
+    static async createTodoList(ctx) {
+        let todoList = ctx.request.body
+        if (todoList) {
+            ctx.body = global.res.format({}, 200, '服务启动成功');
+            ctx.status = 200;
+        } else {
+            ctx.body = global.res.format({}, -1, '创建失败');
+            ctx.status = 200;
+        }
+    }
 
-// router.post('/login', async ctx => {
-//     let {
-//         email,
-//         password
-//     } = ctx.request.body;
-//     ctx.verifyParams({
-//         email: {type: 'string', required: true},
-//         password: {type: 'string', required: true}
-//     });
-//     if (!!email && !!password) {
-//         try {
-//             const dataValues = await UserInfoModel.usreLogin({
-//                 email,
-//                 password
-//             });
-//             const verifyEmail  = await UserInfoModel.getUserEmail(email);
-//             if (md5(dataValues.password)  === md5(password)) {
-//                 ctx.response.status = 200;
-//                 ctx.body = {
-//                     code: 200,
-//                     msg: '登陆成功',
-//                     data: {
-//                         email,
-//                         status: true,
-//                         password:md5(password),
-//                         token: jsonwebtoken.sign({
-//                             data: {
-//                                 email,
-//                                 password
-//                             },
-//                             exp: Math.floor(Date.now() / 1000) + (60 * 60), // 设置 token 过期时间
-//                         }, 'yehocher'),
-//                     }
-//                 }
-//             } else if (!verifyEmail) {
-//                 ctx.response.status = 400;
-//                 ctx.body = {
-//                     code: 500,
-//                     msg: '邮箱未注册',
-//                     data: ''
-//                 }
-//             } else {
-//                 throw new CustomError(constants.CUSTOM_CODE.SOME_CUSTOM_ERROR)
-//             }
+    @request('delete', '/list/{id}')
+    @summary('删除一行 by id')
+    @tag
+    @path({
+        id: {
+            type: 'string',
+            format: 'uuid',
+            required: true
+        }
+    })
+    static async destroyTodoList(ctx) {
+        const {
+            id
+        } = ctx.validatedParams
+        if (id) {
+            ctx.body = {
+                code: 1,
+                message: '成功'
+            }
+        } else {
+            ctx.body = {
+                code: -1,
+                message: '失败'
+            }
+        }
+    }
 
-//         } catch (err) {
-//             throw new CustomError(constants.CUSTOM_CODE.SOME_CUSTOM_ERROR)
-//         }
-//     } else {
-//         ctx.response.status = 400;
-//         ctx.body = {
-//             code: 400,
-//             msg: '参数不齐全'
-//         }
-//     }
-// })
-module.exports = router;
+}
