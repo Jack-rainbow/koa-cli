@@ -34,7 +34,7 @@
     "md5": "^2.2.1",
     "module-alias": "^2.2.2",
     "mysql2": "^1.6.5",
-    "nodemailer": "^6.2.1",
+    "nodemailer": "^6.4.16",
     "regenerator-runtime": "^0.13.7",
     "sequelize": "^5.15.1",
     "signale": "^1.4.0",
